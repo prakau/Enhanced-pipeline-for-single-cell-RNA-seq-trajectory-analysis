@@ -1,13 +1,23 @@
-#!/usr/bin/env nextflow
+docker {
+    enabled = true
+}
 
-params.data = 'data/*.txt' // Example data path
+process {
+    executor = 'local'
+    cpus = 2
+    memory = '4 GB'
+    time = '4h' // Adjust time as per the process requirements
+}
 
-process printFile {
-    input:
-    file txt from params.data
+params {
+    // Add other parameters here
+    genomeIndex = '/path/to/genome/index' // Genome index path for STAR
+    annotationFile = '/path/to/annotation.gtf' // Annotation file path for featureCounts
+}
 
-    script:
-    """
-    cat $txt
-    """
+// Add any custom profiles or docker image specifications if required
+profiles {
+    standard {
+        process.container = 'your_docker_image' // Specify your Docker image
+    }
 }
